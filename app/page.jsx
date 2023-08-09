@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen bg-white pt-[8em] text-black flex-col items-center justify-start p-2 font-sans">
+    <main className="flex min-h-screen bg-white space-y-4 pt-[6em] text-black flex-col items-center justify-start p-2 font-sans">
       <header className="w-full fixed top-0 flex p-2 px-4 shadow-md">
         <nav className="w-1/2 h-[64px] flex items-center text-[34px] font-medium">
           Letro
@@ -12,43 +12,47 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="w-full h-min grid grid-flow-row gap-2 p-2">
-        <div className="w-full h-[10em] shadow-lg flex bg-gradient-to-br from-neutral-100 p-2 to-neutral-200">
-          <div className="h-full w-[40%] bg-white">
+      <div className="w-full text-white flex text-[21px] space-x-2 overflow-x-scroll">
+        <button className="min-w-[3.8em] h-[2.5em] bg-sky-500 rounded-lg ">All</button>
+        <button className="min-w-[5em] h-[2.5em] bg-sky-500 rounded-lg ">Phone</button>
+        <button className="min-w-[5em] h-[2.5em] bg-sky-500 rounded-lg ">Laptop</button>
+        <button className="min-w-[5em] h-[2.5em] bg-sky-500 rounded-lg ">Tablet</button>
+        
+      </div>
+
+      <section className="w-full grid grid-cols-2 gap-2">
+        <div className="h-min p-2 bg-gradient-to-br from-neutral-100 to-neutral-300 shadow-lg flex flex-col justify-start gap-2">
+          <div className="h-[50%] flex justify-center items-center">
             <Image
-              src={"/Testing/HeadPhones2.webp"}
-              alt="HeadPhones"
-              width={160}
-              height={30}
-              className=" object-contain h-full"
+              src={"/Testing/HeadPhonesP.webp"}
+              alt="w"
+              width={200}
+              height={100}
+              className="object-contain h-[135px]"
             />
           </div>
-          <div className="h-full w-[60%] p-2 px-4">
-            <h1 className="text-[28px] font-medium">Title</h1>
-            <p className="text-[20px] text-neutral-400 line-clamp-2">
-              The ultimate Sound for your ears
-            </p>
-            <h2 className="text-[24px] text-end font-semibold">R299</h2>
+          <div>
+            <h1 className="text-[28px] font-medium line-clamp-2 leading-tight">xl-3 Head-Wear Ultimate sound</h1>
+            <h2 className="text-[28px] font-bold text-sky-500">R300</h2>
           </div>
         </div>
-      </section>
 
-      <section className="w-full h-min overflow-x-scroll p-2 grid grid-flow-col gap-2">
-        <div className="h-[15em] p-2 w-[15em] bg-gradient-to-br from-neutral-100 to-neutral-200 shadow-lg flex flex-col justify-start gap-2">
+        <div className="h-min p-2 bg-gradient-to-br from-neutral-100 to-neutral-300 shadow-lg flex flex-col justify-start gap-2">
           <div className="h-[50%] flex justify-center items-center">
-          <Image
-            src={"/Testing/HeadPhonesP.webp"}
-            alt="w"
-            width={200}
-            height={100}
-            className="object-contain h-full"
-          />
+            <Image
+              src={"/Testing/HeadPhones2.webp"}
+              alt="w"
+              width={200}
+              height={100}
+              className="object-contain h-[135px]"
+            />
           </div>
           <div>
-            <h1 className="text-[28px] font-medium">Title</h1>
-            <p className=" line-clamp-2 text-[20px] pr-2 text-neutral-400">Best sound for the ears posable ulra experiance</p>
+            <h1 className="text-[28px] font-medium line-clamp-2 leading-tight">xl-1 Head-Wear</h1>
+            <h2 className="text-[28px] font-bold text-sky-500">R300</h2>
           </div>
         </div>
+
         
       </section>
     </main>
