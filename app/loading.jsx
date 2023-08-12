@@ -1,7 +1,8 @@
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
-    <div role="status">
+    <main className="h-screen w-screen flex justify-center items-center">
+      <div role="status">
       <svg
         aria-hidden="true"
         class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -20,5 +21,6 @@ export default function Loading() {
       </svg>
       <span class="sr-only">Loading...</span>
     </div>
+    </main>
   );
 }

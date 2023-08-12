@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "@/config/FireBase";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const router = useRouter();
@@ -40,6 +41,15 @@ export default function Home() {
     return () => cleanUp(); // Unsubscribe the listener when the component unmounts
   }, []);
 
+  
+  const scrollToSection = () => {
+    const targetSection = document.getElementById('targetSection');
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -50,7 +60,8 @@ export default function Home() {
   };
 
   return (
-    <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-4 pt-[4em] text-black flex-col items-center justify-start pl-2 font-sans">
+    
+    <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
       <header className="w-full backdrop-blur-lg  fixed top-0 flex p-2 px-4 shadow-md h-[64px] z-20">
         <nav className="w-1/2 flex items-center text-[34px] font-medium">
           Letro
@@ -64,11 +75,17 @@ export default function Home() {
                 router.push("/LogIn");
               }
             }}
-            className="bg-gray-300 h-[45px] absolute right-[-6px] rounded-l-full w-[70px] p-1"
+            className={`h-[45px] absolute right-[-6px] rounded-l-full w-[70px] p-1`}
           >
             <div className="h-full">
               {authUser === null ? (
-                "signIn"
+                <Image
+                  src={"/Icons/NoAuth.svg"}
+                  alt="The Icon That Shows you are not Logged In"
+                  height={40}
+                  width={40}
+                  className="h-full w-auto object-contain rounded-full"
+                />
               ) : (
                 <Image
                   src={authUser?.photoURL}
@@ -115,22 +132,25 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="w-full hide-scrollbar min-h-[50px] flex items-center text-white space-x-2">
-        <button className="min-w-[3.8em] h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
+      <div className="w-full overflow-x-scroll p-0 hide-scrollbar min-h-[60px] flex items-center text-white space-x-2">
+      <button className="min-w-[3.8em] h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
           All
         </button>
-        <button className="min-w-[5em] min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
-          Phone
+        <button className="w-max whitespace-nowrap px-3 min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
+        Over-Ear
         </button>
-        <button className="min-w-[5em] min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
-          Laptop
+        <button className="w-max whitespace-nowrap px-3 min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
+        Noise-Canceling
         </button>
-        <button className="min-w-[5em] min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
-          Tablet
+        <button className="w-max whitespace-nowrap px-3 min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
+        Bluetooth
         </button>
-      </section>
+        <button className="w-max whitespace-nowrap px-3 min-h-[2.5em] bg-blue-700 hover:bg-blue-800 rounded-lg ">
+        Gaming
+        </button>
+      </div>
 
-      <div className=" absolute right-[-1px] top-[4em] bg-gradient-to-r from-transparent to-white h-[50px] w-[3rem]"></div>
+      <div className=" absolute right-[-2px] top-[4em] bg-gradient-to-r from-transparent to-[#f4f4f4] h-[50px] w-[3rem]"></div>
 
       <section class="bg-white dark:bg-gray-900">
         <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
@@ -143,7 +163,7 @@ export default function Home() {
           </p>
           <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <a
-              href="#"
+              onClick={scrollToSection}
               class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
             >
               Get started
@@ -173,87 +193,88 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-       
-          {productData.map((product) => (
-            <div
-              key={product.title}
-              class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-            >
-              <a href="#" className="flex justify-center items-center">
-                <Image
-                  className="p-8 rounded-t-lg"
-                  src="/Testing/HeadPhonesP.webp"
-                  alt="product image"
-                  width={300}
-                  height={300}
-                />
+      <section id="targetSection" className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        {productData.map((product) => (
+          <div
+            key={product.title}
+            class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+          >
+            <a href="#" className="flex justify-center items-center">
+              <Image
+                className="p-8 rounded-t-lg"
+                src="/Testing/HeadPhonesP.webp"
+                alt="product image"
+                width={300}
+                height={300}
+              />
+            </a>
+            <div class="px-5 pb-5">
+              <a href="#">
+                <h5 class="text-xl min-h-[56px] line-clamp-2 font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {product.title}
+                </h5>
               </a>
-              <div class="px-5 pb-5">
-                <a href="#">
-                  <h5 class="text-xl min-h-[56px] line-clamp-2 font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {product.title}
-                  </h5>
-                </a>
-                <div class="flex items-center mt-2.5 mb-5">
-                  <svg
-                    class="w-4 h-4 text-yellow-300 mr-1"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 22 20"
-                  >
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                  </svg>
-                  <svg
-                    class="w-4 h-4 text-yellow-300 mr-1"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 22 20"
-                  >
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                  </svg>
-                  <svg
-                    class="w-4 h-4 text-yellow-300 mr-1"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 22 20"
-                  >
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                  </svg>
-                  <svg
-                    class="w-4 h-4 text-yellow-300 mr-1"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 22 20"
-                  >
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                  </svg>
-                  <svg
-                    class="w-4 h-4 text-gray-200 dark:text-gray-600"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 22 20"
-                  >
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                  </svg>
-                  <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
-                    5.0
-                  </span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-bold text-gray-900 dark:text-white">
-                    R{product.price}
-                  </span>
-                </div>
+              <div class="flex items-center mt-2.5 mb-5">
+                <svg
+                  class="w-4 h-4 text-yellow-300 mr-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 20"
+                >
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                </svg>
+                <svg
+                  class="w-4 h-4 text-yellow-300 mr-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 20"
+                >
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                </svg>
+                <svg
+                  class="w-4 h-4 text-yellow-300 mr-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 20"
+                >
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                </svg>
+                <svg
+                  class="w-4 h-4 text-yellow-300 mr-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 20"
+                >
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                </svg>
+                <svg
+                  class="w-4 h-4 text-gray-200 dark:text-gray-600"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 20"
+                >
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                </svg>
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
+                  5.0
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-gray-900 dark:text-white">
+                  R{product.price}
+                </span>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
       </section>
+
+      <Footer/>
     </main>
   );
 }
