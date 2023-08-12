@@ -1,19 +1,79 @@
+"use client";
 import Accordion from "@/components/Accordion";
 import Crousel from "@/components/Crousel";
-import Footer from "@/components/Footer";
 import Review from "@/components/Review";
-import React from "react";
+import { db } from "@/config/FireBase";
+import { doc, getDoc } from "firebase/firestore";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 function Product() {
+  const router = useRouter();
+  const [ProductData, setProductData] = useState([]);
+  const [isLoading, setisLoading] = useState(true)
+  const dirtyPath = usePathname();
+  const cleanId = dirtyPath.split("/").join("");
+  console.log(`Cleaned firebase ID ${cleanId}`);
+
+  const docRef = doc(db, "ProductInformation", cleanId);
+
+  // Fetch the document using the docRef
+  useEffect(() => {
+    const fetchDocument = async () => {
+      try {
+        const docSnapshot = await getDoc(docRef);
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          console.log(data);
+          setProductData(data);
+          setisLoading(false)
+        } else {
+          console.log("Document not found");
+        }
+      } catch (error) {
+        console.error("Error fetching document:", error);
+      }
+    };
+
+    fetchDocument();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ProductData.title]);
+
   return (
-    <main className="h-screen hide-scrollbar bg-[#f4f4f4] p-2 pt-[2rem] overflow-y-scroll overflow-x-hidden flex flex-col items-center">
+    <main className="h-screen hide-scrollbar relative bg-[#f4f4f4] p-2 pt-[2rem] overflow-y-scroll overflow-x-hidden flex flex-col items-center">
+      <button
+        onClick={() => router.back()}
+        className=" p-2 absolute z-50 top-8 left-4"
+      >
+        <Image
+          src={"/Icons/LeftArow.svg"}
+          width={40}
+          height={40}
+          alt="Go Back to previous page"
+        />
+      </button>
+
       <Crousel />
 
       <div class="w-full max-w-sm mt-[5rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-5">
+      {isLoading ? (
+    
+    <div role="status" class="max-w-sm animate-pulse p-5">
+    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5"></div>
+    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+    <span class="sr-only">Loading...</span>
+     </div>
+
+        ) : (
+          <div class="p-5">
           <a href="#">
             <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+              {ProductData.title}
             </h5>
           </a>
           <div class="flex items-center mt-2.5 mb-5">
@@ -68,7 +128,7 @@ function Product() {
           </div>
           <div class="flex items-center justify-between">
             <span class="text-3xl font-bold text-gray-900 dark:text-white">
-              $599
+              R{ProductData.price}
             </span>
             <a
               href="#"
@@ -77,7 +137,8 @@ function Product() {
               Add to cart
             </a>
           </div>
-        </div>
+          </div>
+     )}
       </div>
 
       <Accordion />
@@ -87,3 +148,7 @@ function Product() {
 }
 
 export default Product;
+
+
+
+
