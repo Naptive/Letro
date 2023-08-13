@@ -2,11 +2,11 @@
 import Image from "next/image";
 import { useState } from "react";
 
-function Carousel() {
+function Carousel({ ProductData }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    "/Testing/HeadPhonesP.webp",
+    ProductData.imageOne,
     "/Testing/HeadPhones2.webp",
     "/Testing/HeadPhonesP.webp",
     "/Testing/HeadPhones2.webp",

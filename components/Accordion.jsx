@@ -1,59 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react';
+import Image from 'next/image';
 
 function Accordion() {
-  return (
-    
-<div className='w-full my-3' id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
-  <h2 id="accordion-color-heading-1">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="true" aria-controls="accordion-color-body-1">
-      <span>Product Details</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
-    </button>
-  </h2>
-  <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
-    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is an open-source library of interactive components built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.</p>
-      <p class="text-gray-500 dark:text-gray-400">Check out this guide to learn how to <a href="/docs/getting-started/introduction/" class="text-blue-600 dark:text-blue-500 hover:underline">get started</a> and start developing websites even faster with components on top of Tailwind CSS.</p>
-    </div>
-  </div>
-  <h2 id="accordion-color-heading-2">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-2" aria-expanded="false" aria-controls="accordion-color-body-2">
-      <span>What about Shiping?</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
-    </button>
-  </h2>
-  <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
-    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is first conceptualized and designed using the Figma software so everything you see in the library has a design equivalent in our Figma file.</p>
-      <p class="text-gray-500 dark:text-gray-400">Check out the <a href="https://flowbite.com/figma/" class="text-blue-600 dark:text-blue-500 hover:underline">Figma design system</a> based on the utility classes from Tailwind CSS and components from Flowbite.</p>
-    </div>
-  </div>
-  <h2 id="accordion-color-heading-3">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-3" aria-expanded="false" aria-controls="accordion-color-body-3">
-      <span>Which Region do we Ship?</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
-    </button>
-  </h2>
-  <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
-    <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">The main difference is that the core components from Flowbite are open source under the MIT license, whereas Tailwind UI is a paid product. Another difference is that Flowbite relies on smaller and standalone components, whereas Tailwind UI offers sections of pages.</p>
-      <p class="mb-2 text-gray-500 dark:text-gray-400">However, we actually recommend using both Flowbite, Flowbite Pro, and even Tailwind UI as there is no technical reason stopping you from using the best of two worlds.</p>
-      <p class="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-      <ul class="pl-5 text-gray-500 list-disc dark:text-gray-400">
-        <li><a href="https://flowbite.com/pro/" class="text-blue-600 dark:text-blue-500 hover:underline">Flowbite Pro</a></li>
-        <li><a href="https://tailwindui.com/" rel="nofollow" class="text-blue-600 dark:text-blue-500 hover:underline">Tailwind UI</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
+  const [openOne, setOpenOne] = useState(false);
+  const [openTwo, setOpenTwo] = useState(false);
 
-  )
+  const handleToggleOne = () => {
+    setOpenOne(!openOne);
+    setOpenTwo(false);
+  };
+
+  const handleToggleTwo = () => {
+    setOpenTwo(!openTwo);
+    setOpenOne(false);
+  };
+
+  return (
+    <section className='w-full my-4 relative text-gray-900 flex flex-col'>
+      <div
+        onClick={handleToggleOne}
+        className={`${openOne ? "h-min" : "h-[50px]"} bg-gray-200 px-5 pb-5 pt-[60px] rounded-t-lg relative`}
+      >
+        <h1 className='absolute top-7 left-5 font-medium text-gray-600'>Product Details</h1>
+        <div className={`${openOne ? "rotate-180" : "rotate-[360deg]"} absolute top-7 right-5 overflow-hidden animate-all duration-300`}>
+          <Image src='/Icons/openMore.svg' height={16} width={16} alt='Image That indicates that more options are visible'/>
+        </div>
+        <p className={`${!openOne ? "hidden" : "block text-gray-500"}`}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facere, molestias ipsam. Asperiores dolorum eos quod blanditiis, reiciendis, ipsum non explicabo, aut sequi error quasi fugit! Sint distinctio illo alias. Quaerat.
+        </p>
+      </div>
+
+      <div
+        onClick={handleToggleTwo}
+        className={`${openTwo ? "h-min" : "h-[60px]"} bg-gray-200 px-5 pb-5 pt-[60px] rounded-b-lg relative mt-2`}
+      >
+        <h1 className='absolute top-7 left-5 font-medium text-gray-600'>How long will Shiping be</h1>
+        <div className={`${openTwo ? " rotate-180" : "rotate-[360deg]"} absolute top-7 right-5 overflow-hidden animate-all duration-300`}>
+          <Image src='/Icons/openMore.svg' height={16} width={16} alt='Image That indicates that more options are visible'/>
+        </div>
+        <p className={`${!openTwo ? "hidden" : "block text-gray-500"}`}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facere, molestias ipsam. Asperiores dolorum eos quod blanditiis, reiciendis, ipsum non explicabo, aut sequi error quasi fugit! Sint distinctio illo alias. Quaerat.
+        </p>
+      </div>
+    </section>
+  );
 }
 
-export default Accordion
+export default Accordion;

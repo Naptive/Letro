@@ -62,6 +62,10 @@ export default function Home() {
     }
   };
 
+  setTimeout(() => {
+    setModalOpen(false)
+  },5000)
+
   return (
     
     <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
@@ -128,7 +132,7 @@ export default function Home() {
 
           <button
             onClick={logout}
-            className="w-full h-12 bg-blue-700 rounded-lg text-white"
+            className="w-full h-10 bg-blue-700 rounded-lg text-white"
           >
             Sign Out
           </button>
@@ -198,7 +202,7 @@ export default function Home() {
 
       {
         isLoading ? (
-          <section id="targetSection" className="w-full min-h-[44rem] max-h-none flex justify-center items-center">
+          <section id="targetSection" className="w-full min-h-[24rem] max-h-none flex justify-center items-center">
 
           <div role="status">
       <svg
@@ -222,7 +226,7 @@ export default function Home() {
 
           </section>
         ) : (
-          <section id="targetSection" className="w-full min-h-[44rem] max-h-none grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          <section id="targetSection" className="w-full max-h-none grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {productData.map((product) => (
           
          <Link href={`/${product.id}`} key={product.title}>
@@ -231,8 +235,8 @@ export default function Home() {
           >
             <a href="#" className="flex justify-center items-center">
               <Image
-                className="p-8 rounded-t-lg"
-                src="/Testing/HeadPhonesP.webp"
+                className="p-8 object-contain rounded-t-lg h-[160px] w-auto"
+                src={product.imageOne || '/Testing/HeadPhonesP.webp'}
                 alt="product image"
                 width={300}
                 height={300}
@@ -291,7 +295,7 @@ export default function Home() {
                   <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                 </svg>
                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
-                  5.0
+                  {product.rating}
                 </span>
               </div>
               <div class="flex items-center justify-between">
