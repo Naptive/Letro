@@ -35,8 +35,8 @@ function Carousel({ ProductData }) {
               src={slide}
               alt={`Slide ${index + 1}`}
               className="absolute object-contain w-auto block h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-              width={200}
-              height={200}
+              width={220}
+              height={220}
             />
           </div>
         ))}
