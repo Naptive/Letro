@@ -29,7 +29,7 @@ function Carousel({ ProductData }) {
             key={index}
             className={`${
               index === currentSlide ? "block" : "hidden"
-            } duration-700 ease-in-out`}
+            } duration-700 ease-in-out`} 
           >
             <Image
               src={slide}

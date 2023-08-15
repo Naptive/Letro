@@ -38,7 +38,7 @@ export default function Home() {
       const cleanUp = onSnapshot(
         collection(db, "ProductInformation"),
         (querySnapshot) => {
-          const FilterdInfo = querySnapshot.docs.map((doc) => ({
+          const FilterdInfo = querySnapshot.docs.map((doc) => ({ 
             ...doc.data(),
             id: doc.id,
           }));

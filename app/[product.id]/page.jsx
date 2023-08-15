@@ -21,7 +21,7 @@ function Product() {
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const docSnapshot = await getDoc(docRef);
+        const docSnapshot = await getDoc(docRef); 
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
           setisLoading(false);
@@ -119,4 +119,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default Product; 
