@@ -37,6 +37,7 @@ function Carousel({ ProductData }) {
               className="absolute object-contain w-auto block h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               width={220}
               height={220}
+              priority
             />
           </div>
         ))}
