@@ -22,7 +22,7 @@ function Carousel({ ProductData }) {
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full bg-white rounded-lg shadow p-4 pb-10">
       <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
         {slides.map((slide, index) => (
           <div
@@ -43,7 +43,7 @@ function Carousel({ ProductData }) {
         ))}
       </div>
 
-      <div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-[-55px] left-1/2">
+      <div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-[-30px] left-1/2">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -66,7 +66,7 @@ function Carousel({ ProductData }) {
         data-carousel-prev
         onClick={handlePrevSlide}
       >
-        <Image src={'/Icons/LeftImage.svg'} alt="icon" width={40} height={40} className="shadow rounded"/>
+        <Image src={'/Icons/LeftImage.svg'} alt="prev image in carousel" width={40} height={40}/>
       </button>
       <button
         type="button"
@@ -74,7 +74,7 @@ function Carousel({ ProductData }) {
         data-carousel-next
         onClick={handleNextSlide}
       >
-       <Image src={'/Icons/RightImage.svg'} alt="icon" width={40} height={40} className="shadow rounded"/>
+       <Image src={'/Icons/RightImage.svg'} alt="next image in carousel" width={40} height={40}/>
       </button>
     </div>
   );

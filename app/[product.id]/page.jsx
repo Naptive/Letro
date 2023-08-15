@@ -13,9 +13,7 @@ function Product() {
   const router = useRouter();
   const [ProductData, setProductData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
-  const dirtyPath = usePathname();
-  const cleanId = dirtyPath.split("/").join("");
-  console.log(`Cleaned firebase ID ${cleanId}`);
+  const cleanId = usePathname().split("/").join("");
 
   const docRef = doc(db, "ProductInformation", cleanId);
 
@@ -26,9 +24,8 @@ function Product() {
         const docSnapshot = await getDoc(docRef);
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
-          console.log(data);
-          setProductData(data);
           setisLoading(false);
+          setProductData(data);
         } else {
           console.log("Document not found");
         }
@@ -39,25 +36,25 @@ function Product() {
 
     fetchDocument();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ProductData.title]);
+  }, []);
 
   return (
-    <main className="h-screen hide-scrollbar relative bg-[#f4f4f4] p-2 pt-[4rem] overflow-y-scroll overflow-x-hidden flex flex-col items-center">
+    <main className="h-screen hide-scrollbar relative bg-[#f4f4f4] p-2 pt-[5.1rem] overflow-y-scroll overflow-x-hidden flex flex-col items-center">
       <button
         onClick={() => router.back()}
-        className=" p-2 absolute z-50 top-8 left-2"
+        className=" p-2 absolute z-50 top-5 left-3 bg-blue-700 rounded-lg"
       >
         <Image
-          src={"/Icons/LeftArow.svg"}
-          width={40}
-          height={40}
+          src={"/Icons/LeftArrowWhite.svg"}
+          width={34}
+          height={34}
           alt="Go Back to previous page"
         />
       </button>
 
       <Crousel ProductData={ProductData} />
 
-      <div class="w-full max-w-sm mt-[5rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div class="w-full max-w-sm mt-[3rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         {isLoading ? (
           <div role="status" class="max-w-sm animate-pulse p-5 h-[186px] ">
             <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"></div>

@@ -29,22 +29,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const cleanUp = onSnapshot(
-      collection(db, "ProductInformation"),
-      (querySnapshot) => {
-        const FilterdInfo = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        console.log(FilterdInfo);
-        if (FilterdInfo.length > 0) {
-          setProductData(FilterdInfo);
-          setIsLoading(false);
-          console.log(FilterdInfo); // Set to the first item in the array
+    const localStorageData = localStorage.getItem('firebaseData');
+    if (localStorageData) {
+      setProductData(JSON.parse(localStorageData));
+      setIsLoading(false);
+      console.log('Data loaded from local storage');
+    } else {
+      const cleanUp = onSnapshot(
+        collection(db, "ProductInformation"),
+        (querySnapshot) => {
+          const FilterdInfo = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          console.log(FilterdInfo);
+          if (FilterdInfo.length > 0) {
+            setIsLoading(false);
+            setProductData(FilterdInfo)
+            localStorage.setItem('firebaseData', JSON.stringify(FilterdInfo));
+            console.log(`from database ${FilterdInfo}`); // Set to the first item in the array
+          }
         }
-      }
-    );
-    return () => cleanUp(); // Unsubscribe the listener when the component unmounts
+      );
+      // Unsubscribe the listener when the component unmounts
+      return () => cleanUp();
+    }
+     
   }, []);
 
   const scrollToSection = () => {
