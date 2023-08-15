@@ -123,7 +123,7 @@ export default function Home() {
                 />
               ) : (
                 <Image
-                  src={authUser?.photoURL}
+                  src={authUser?.photoURL || '/Testing/userPic.webp'}
                   alt="w"
                   height={40}
                   width={40}
@@ -146,14 +146,14 @@ export default function Home() {
         <div className="absolute top-[68px] flex flex-col justify-between h-[20em] w-[15em] p-2 right-6 bg-white shadow-2xl">
           <div className="flex items-center gap-2">
             <Image
-              src={authUser?.photoURL}
+              src={authUser?.photoURL || '/Testing/userPic.webp'}
               alt="user image"
               height={35}
               width={35}
               className="rounded-full h-[40px] w-auto object-contain"
             />
             <div>
-              <h1 className="font-medium">{authUser?.displayName}</h1>
+              <h1 className="font-medium">{authUser?.displayName || ''}</h1>
               <h2 className="text-[15px]">{authUser?.email}</h2>
             </div>
           </div>
