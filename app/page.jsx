@@ -16,8 +16,8 @@ export default function Home() {
   const [productData, setProductData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchData, setSearchData] = useState([]);
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [inputValue, setInput] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [inputValue, setInput] = useState("");
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setAuthUser(user);
@@ -29,32 +29,55 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem('firebaseData');
+    const localStorageData = localStorage.getItem("firebaseData");
     if (localStorageData) {
       setProductData(JSON.parse(localStorageData));
       setIsLoading(false);
-      console.log('Data loaded from local storage');
+      console.log("Data loaded from local storage");
     } else {
       const cleanUp = onSnapshot(
         collection(db, "ProductInformation"),
         (querySnapshot) => {
-          const FilterdInfo = querySnapshot.docs.map((doc) => ({ 
+          const FilterdInfo = querySnapshot.docs.map((doc) => ({
             ...doc.data(),
             id: doc.id,
           }));
-          console.log(FilterdInfo);
           if (FilterdInfo.length > 0) {
             setIsLoading(false);
-            setProductData(FilterdInfo)
-            localStorage.setItem('firebaseData', JSON.stringify(FilterdInfo));
+            setProductData(FilterdInfo);
+            localStorage.setItem("firebaseData", JSON.stringify(FilterdInfo));
             console.log(`from database ${FilterdInfo}`); // Set to the first item in the array
           }
         }
       );
-      // Unsubscribe the listener when the component unmounts
       return () => cleanUp();
     }
-     
+  }, []);
+
+  useEffect(() => {
+    const myFunction = () => {
+      const cleanUp = onSnapshot(
+        collection(db, "ProductInformation"),
+        (querySnapshot) => {
+          const FilterdInfo = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          if (FilterdInfo.length > 0) {
+            localStorage.removeItem("firebaseData");
+            localStorage.setItem("firebaseData", JSON.stringify(FilterdInfo));
+            console.log(`run once ${FilterdInfo}`);
+          }
+        }
+      );
+      return () => cleanUp();
+    };
+
+    const intervalId = setInterval(myFunction, 180000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const scrollToSection = () => {
@@ -75,21 +98,46 @@ export default function Home() {
 
   const handleSearch = (e) => {
     const i = e.target.value;
-    setInput(i)
+    setInput(i);
     const b = productData.filter((value) => {
-       return value.title.toLowerCase().includes(i.toLowerCase())
-    })
+      return value.title.toLowerCase().includes(i.toLowerCase());
+    });
     if (i === "") {
-      setSearchData([])
+      setSearchData([]);
     } else {
-      setSearchData(b)
+      setSearchData(b);
     }
   };
 
   const clear = () => {
-      setInput("")
-      setSearchData([])
+    setInput("");
+    setSearchData([]);
+  };
+
+  function addToCart(product) {
+    // Get the current cart from local storage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Add the product to the cart
+    cart.push(product);
+
+    // Update the cart in local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Log the cart to the console
+    console.log("Cart:", cart);
   }
+
+  function checkIfInCart() {
+    // Get the current cart from local storage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Check if an item with the same ID is in the cart
+    return cart.find((item) => item.id === productData.id !== undefined);
+  }
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  
 
   return (
     <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
@@ -99,7 +147,12 @@ export default function Home() {
         </nav>
         <nav className="w-1/2 flex items-center justify-end pr-14">
           <div onClick={() => setSearchOpen(!searchOpen ? true : false)}>
-            <Image src={'/Icons/searchIcon.svg'} alt="search icon" width={30} height={30}/>
+            <Image
+              src={"/Icons/searchIcon.svg"}
+              alt="search icon"
+              width={30}
+              height={30}
+            />
           </div>
           <div
             onClick={() => {
@@ -123,7 +176,7 @@ export default function Home() {
                 />
               ) : (
                 <Image
-                  src={authUser?.photoURL || '/Testing/userPic.webp'}
+                  src={authUser?.photoURL || "/Testing/userPic.webp"}
                   alt="w"
                   height={40}
                   width={40}
@@ -146,14 +199,14 @@ export default function Home() {
         <div className="absolute top-[68px] flex flex-col justify-between h-[20em] w-[15em] p-2 right-6 bg-white shadow-2xl">
           <div className="flex items-center gap-2">
             <Image
-              src={authUser?.photoURL || '/Testing/userPic.webp'}
+              src={authUser?.photoURL || "/Testing/userPic.webp"}
               alt="user image"
               height={35}
               width={35}
               className="rounded-full h-[40px] w-auto object-contain"
             />
             <div>
-              <h1 className="font-medium">{authUser?.displayName || ''}</h1>
+              <h1 className="font-medium">{authUser?.displayName || ""}</h1>
               <h2 className="text-[15px]">{authUser?.email}</h2>
             </div>
           </div>
@@ -167,48 +220,59 @@ export default function Home() {
         </div>
       </div>
 
-      <section className={`${!searchOpen ? "hidden" : "fixed"} top-0 left-0 bg-[#f4f4f4] w-full z-40 h-full flex gap-2 flex-col items-center justify-start pt-[4.5em]`}>
-        
+      <section
+        className={`${
+          !searchOpen ? "hidden" : "fixed"
+        } top-0 left-0 bg-[#f4f4f4] w-full z-40 h-full flex gap-2 flex-col items-center justify-start pt-[4.5em]`}
+      >
         <nav className=" absolute top-0 w-full h-[64px] flex items-center justify-evenly">
-
-          <button  onClick={() => {
-            setSearchOpen(false)
-            clear()
-          }}>
-            <Image src={'/Icons/LeftArow.svg'} alt="close search section" width={40} height={40}/>
+          <button
+            onClick={() => {
+              setSearchOpen(false);
+              clear();
+            }}
+          >
+            <Image
+              src={"/Icons/LeftArow.svg"}
+              alt="close search section"
+              width={40}
+              height={40}
+            />
           </button>
-        <input
-          onChange={handleSearch}
-          value={inputValue}
-          type="text"
-          placeholder="Search"
-          className="bg-white shadow rounded-md border-none w-[238px] min-h-[50px]"
-        />
+          <input
+            onChange={handleSearch}
+            value={inputValue}
+            type="text"
+            placeholder="Search"
+            className="bg-white shadow rounded-md border-none w-[238px] min-h-[50px]"
+          />
 
-        <button onClick={clear}>
-        <Image src={'/Icons/Cross.svg'} alt="close search section" width={40} height={40}/>
-         </button>
+          <button onClick={clear}>
+            <Image
+              src={"/Icons/Cross.svg"}
+              alt="close search section"
+              width={40}
+              height={40}
+            />
+          </button>
         </nav>
 
         {searchData.length != 0 && (
           <section className="w-[90%] h-min flex flex-col gap-3 bg-white p-5 shadow-lg rounded-md">
             {searchData.map((product, vite) => (
               <Link key={vite} href={`/${product.id}`}>
-              <div className="flex gap-4 items-center">
-              <Image
-                src={product.imageOne || "/Testing/HeadPhonesP.webp"}
-                alt={product.title}
-                width={50}
-                height={50}
-                className=" object-contain"
-                priority
-              />
+                <div className="flex gap-4 items-center">
+                  <Image
+                    src={product.imageOne || "/Testing/HeadPhonesP.webp"}
+                    alt={product.title}
+                    width={50}
+                    height={50}
+                    className=" object-contain"
+                    priority
+                  />
 
-              <h1>
-                {product.title}
-              </h1>
-             
-            </div>
+                  <h1>{product.title}</h1>
+                </div>
               </Link>
             ))}
           </section>
@@ -308,7 +372,31 @@ export default function Home() {
         >
           {productData.map((product) => (
             <Link href={`/${product.id}`} key={product.title}>
-              <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <div class="w-full max-w-sm relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <button
+                  onClick={(e) => {
+                    addToCart(product)
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }}
+                  className=" absolute top-3 right-3"
+                >
+                  {(cart.find((item) => item.id === product.id) !== undefined) ? (
+                  <Image
+                      src={"/Icons/isCart.svg"}
+                      alt="In Cart"
+                      width={30}
+                      height={30}
+                    />
+                  ) : (
+                    <Image
+                    src={"/Icons/addCart.svg"}
+                    alt="Add to Cart"
+                    width={30}
+                    height={30}
+                  />
+                  )}
+                </button>
                 <a href="#" className="flex justify-center items-center">
                   <Image
                     className="p-8 object-contain rounded-t-lg h-[160px] w-auto"
