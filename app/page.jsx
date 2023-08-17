@@ -18,6 +18,7 @@ export default function Home() {
   const [searchData, setSearchData] = useState([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [inputValue, setInput] = useState("");
+  const [inCart, setInCart] = useState(false);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setAuthUser(user);
@@ -114,31 +115,6 @@ export default function Home() {
     setSearchData([]);
   };
 
-  function addToCart(product) {
-    // Get the current cart from local storage
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Add the product to the cart
-    cart.push(product);
-
-    // Update the cart in local storage
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    // Log the cart to the console
-    console.log("Cart:", cart);
-  }
-
-  function checkIfInCart() {
-    // Get the current cart from local storage
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Check if an item with the same ID is in the cart
-    return cart.find((item) => item.id === productData.id !== undefined);
-  }
-
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  
-
   return (
     <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
       <header className="w-full backdrop-blur-lg  fixed top-0 flex p-2 px-4 shadow-md h-[64px] z-20">
@@ -146,6 +122,7 @@ export default function Home() {
           Letro
         </nav>
         <nav className="w-1/2 flex items-center justify-end pr-14">
+          
           <div onClick={() => setSearchOpen(!searchOpen ? true : false)}>
             <Image
               src={"/Icons/searchIcon.svg"}
@@ -154,6 +131,12 @@ export default function Home() {
               height={30}
             />
           </div>
+          <Image
+            src={"/Icons/goToCart.svg"}
+            alt="link to page icon"
+            width={30}
+            height={30}
+          />
           <div
             onClick={() => {
               if (authUser) {
@@ -375,28 +358,21 @@ export default function Home() {
               <div class="w-full max-w-sm relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <button
                   onClick={(e) => {
-                    addToCart(product)
-                    e.preventDefault()
-                    e.stopPropagation()
+                    setInCart(inCart ? false : true);
+                    e.preventDefault();
+                    e.stopPropagation();
                   }}
                   className=" absolute top-3 right-3"
                 >
-                  {(cart.find((item) => item.id === product.id) !== undefined) ? (
                   <Image
-                      src={"/Icons/isCart.svg"}
-                      alt="In Cart"
-                      width={30}
-                      height={30}
-                    />
-                  ) : (
-                    <Image
-                    src={"/Icons/addCart.svg"}
-                    alt="Add to Cart"
+                    onclick={(e) => e.stopPropagation()}
+                    src={inCart ? "/Icons/isCart.svg" : "/Icons/addCart.svg"}
+                    alt="add to Cart"
                     width={30}
                     height={30}
                   />
-                  )}
                 </button>
+
                 <a href="#" className="flex justify-center items-center">
                   <Image
                     className="p-8 object-contain rounded-t-lg h-[160px] w-auto"

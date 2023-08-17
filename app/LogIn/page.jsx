@@ -20,6 +20,7 @@ function Login() {
       setLoading(true);
       await signInWithPopup(auth, provider).then(() => {
         router.push("/");
+        localStorage.setItem(auth.currentUser.email, auth.currentUser.photoURL)
       });
     } catch (error) {
       console.log(error);
