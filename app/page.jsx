@@ -8,6 +8,7 @@ import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "@/config/FireBase";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import ImageButton from "@/components/ImageButton";
 
 export default function Home() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function Home() {
   const [searchData, setSearchData] = useState([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [inputValue, setInput] = useState("");
-  const [inCart, setInCart] = useState(false);
+  const [Cart, setCart] = useState([]);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setAuthUser(user);
@@ -114,6 +115,12 @@ export default function Home() {
     setInput("");
     setSearchData([]);
   };
+  
+ 
+ 
+
+  
+
 
   return (
     <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
@@ -122,7 +129,6 @@ export default function Home() {
           Letro
         </nav>
         <nav className="w-1/2 flex items-center justify-end pr-14">
-          
           <div onClick={() => setSearchOpen(!searchOpen ? true : false)}>
             <Image
               src={"/Icons/searchIcon.svg"}
@@ -131,12 +137,18 @@ export default function Home() {
               height={30}
             />
           </div>
-          <Image
-            src={"/Icons/goToCart.svg"}
-            alt="link to page icon"
-            width={30}
-            height={30}
-          />
+          <div
+            onClick={() => {
+              router.push("/Cart");
+            }}
+          >
+            <Image
+              src={"/Icons/goToCart.svg"}
+              alt="link to page icon"
+              width={30}
+              height={30}
+            />
+          </div>
           <div
             onClick={() => {
               if (authUser) {
@@ -356,23 +368,9 @@ export default function Home() {
           {productData.map((product) => (
             <Link href={`/${product.id}`} key={product.title}>
               <div class="w-full max-w-sm relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <button
-                  onClick={(e) => {
-                    setInCart(inCart ? false : true);
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  className=" absolute top-3 right-3"
-                >
-                  <Image
-                    onclick={(e) => e.stopPropagation()}
-                    src={inCart ? "/Icons/isCart.svg" : "/Icons/addCart.svg"}
-                    alt="add to Cart"
-                    width={30}
-                    height={30}
-                  />
-                </button>
-
+                
+                  <ImageButton product={product} setCart={setCart} Cart={Cart} productData={productData}/>
+                  
                 <a href="#" className="flex justify-center items-center">
                   <Image
                     className="p-8 object-contain rounded-t-lg h-[160px] w-auto"
