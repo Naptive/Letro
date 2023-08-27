@@ -6,14 +6,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 function Cart() {
-  let cartItems = JSON.parse(sessionStorage.getItem("cart")) || [];
+  //let cartItems = JSON.parse(sessionStorage.getItem("cart")) || [];
 
   const [authUser, setAuthUser] = useState(auth.currentUser);
   const [modalOpen, setModalOpen] = useState(false);
   const [amount, setAmount] = useState(1)
   const [searchOpen, setSearchOpen] = useState(false);
   const [inputValue, setInput] = useState("");
+  const [productData, setProductData] = useState([]);
+  const [value, setValue] = useState([]);
   const [searchData, setSearchData] = useState([]);
+
   const clear = () => {
     setInput("");
     setSearchData([]);
@@ -39,6 +42,14 @@ function Cart() {
       setSearchData(b);
     }
   };
+
+  useEffect(() => {
+    // Check if browser environment is available
+    if (typeof window !== "undefined") {
+      const storedValue = JSON.parse(sessionStorage.getItem("cart")) || [];
+      setValue(storedValue);
+    }
+  }, []);
 
   return (
     <main className=" p-2 pt-[74px] space-y-2 bg-[#f4f4f4] relative h-screen w-full">
@@ -197,7 +208,7 @@ function Cart() {
       </section>
 
       <section className="w-full h-min grid grid-cols-1">
-        {cartItems.map((cart) => (
+        {value.map((cart) => (
           <div
             key={cart.id}
             className="h-[108px] flex m-2"

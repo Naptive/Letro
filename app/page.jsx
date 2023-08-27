@@ -117,11 +117,6 @@ export default function Home() {
   };
   
  
- 
-
-  
-
-
   return (
     <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] lg:px-[50px] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
       <header className="w-full backdrop-blur-lg  fixed top-0 flex p-2 px-4 shadow-md h-[64px] z-20">
