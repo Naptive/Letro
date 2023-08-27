@@ -8,7 +8,7 @@ import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "@/config/FireBase";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import ImageButton from "@/components/ImageButton";
+import AddToCartButton from "@/components/AddToCartButton";
 
 export default function Home() {
   const router = useRouter();
@@ -123,13 +123,13 @@ export default function Home() {
 
 
   return (
-    <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
+    <main className="flex scroll-smooth hide-scrollbar overflow-y-scroll overflow-x-hidden h-screen relative top-0 left-0 bg-[#f4f4f4] space-y-2 pt-[4.5em] lg:px-[50px] text-black flex-col items-center justify-start pb-2 pl-2 pr-1 font-sans">
       <header className="w-full backdrop-blur-lg  fixed top-0 flex p-2 px-4 shadow-md h-[64px] z-20">
         <nav className="w-1/2 flex items-center text-[34px] font-medium">
           Letro
         </nav>
         <nav className="w-1/2 flex items-center justify-end pr-14">
-          <div onClick={() => setSearchOpen(!searchOpen ? true : false)}>
+          <div onClick={() => setSearchOpen(!searchOpen ? true : false)} className="cursor-pointer">
             <Image
               src={"/Icons/searchIcon.svg"}
               alt="search icon"
@@ -138,6 +138,7 @@ export default function Home() {
             />
           </div>
           <div
+          className="cursor-pointer"
             onClick={() => {
               router.push("/Cart");
             }}
@@ -159,7 +160,7 @@ export default function Home() {
             }}
             className={`h-[45px] absolute right-[-6px] rounded-l-full w-[70px] p-1`}
           >
-            <div className="h-full">
+            <div className="h-full cursor-pointer">
               {authUser === null ? (
                 <Image
                   src={"/Icons/NoAuth.svg"}
@@ -191,7 +192,7 @@ export default function Home() {
           modalOpen === false ? "hidden" : "block"
         } w-screen h-screen fixed bottom-0 left-0 z-10`}
       >
-        <div className="absolute top-[68px] flex flex-col justify-between h-[20em] w-[15em] p-2 right-6 bg-white shadow-2xl">
+        <div className="absolute top-[68px] flex flex-col justify-between h-[15em] w-[15em] p-2 right-6 bg-white shadow-2xl">
           <div className="flex items-center gap-2">
             <Image
               src={authUser?.photoURL || "/Testing/userPic.webp"}
@@ -220,7 +221,7 @@ export default function Home() {
           !searchOpen ? "hidden" : "fixed"
         } top-0 left-0 bg-[#f4f4f4] w-full z-40 h-full flex gap-2 flex-col items-center justify-start pt-[4.5em]`}
       >
-        <nav className=" absolute top-0 w-full h-[64px] flex items-center justify-evenly">
+        <nav className="bg-[#f4f4f4] absolute top-[-6px] pt-2 w-full h-[64px] flex items-center justify-evenly">
           <button
             onClick={() => {
               setSearchOpen(false);
@@ -304,7 +305,7 @@ export default function Home() {
             Headphone Collection. Elevate Your Sound Experience Today!.
           </p>
           <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <a
+            <button
               onClick={scrollToSection}
               class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
             >
@@ -324,7 +325,7 @@ export default function Home() {
                   d="M1 5h12m0 0L9 1m4 4L9 9"
                 />
               </svg>
-            </a>
+            </button>
             <a
               href="#"
               class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
@@ -369,7 +370,7 @@ export default function Home() {
             <Link href={`/${product.id}`} key={product.title}>
               <div class="w-full max-w-sm relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 
-                  <ImageButton product={product} setCart={setCart} Cart={Cart} productData={productData}/>
+                  <AddToCartButton product={product} setCart={setCart} Cart={Cart} productData={productData}/>
                   
                 <a href="#" className="flex justify-center items-center">
                   <Image

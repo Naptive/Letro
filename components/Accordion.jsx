@@ -36,16 +36,16 @@ function Accordion({ ProductData }) {
       <div
         onClick={handleToggleOne}
         className={`${
-          openOne ? "h-min pt-[60px]" : "min-h-[70px] p-0"
+          openOne ? "h-min pt-[60px]" : "min-h-[60px] p-0"
         } bg-gray-200 px-5 pb-5 rounded-t-lg relative animate-all duration-300`}
       >
-        <h1 className="absolute top-6 left-5 font-medium text-gray-600">
+        <h1 className="absolute top-4 left-5 font-medium text-gray-600">
           Product Details
         </h1>
         <div
           className={`${
             openOne ? "rotate-180" : "rotate-[360deg]"
-          } absolute top-6 right-5 overflow-hidden animate-all duration-300`}
+          } absolute top-4 right-5 overflow-hidden animate-all duration-300`}
         >
           <Image
             src="/Icons/openMore.svg"
@@ -62,16 +62,16 @@ function Accordion({ ProductData }) {
       <div
         onClick={handleToggleTwo}
         className={`${
-          openTwo ? "h-min pt-[60px]" : "min-h-[70px] p-0"
-        } bg-gray-200 px-5 pb-5 rounded-b-lg relative mt-2`}
+          openTwo ? "h-min pt-[60px]" : "min-h-[60px] p-0"
+        } bg-gray-200 px-5 pb-5 rounded-b-lg relative mt-1`}
       >
-        <h1 className="absolute top-6 left-5 font-medium text-gray-600">
+        <h1 className="absolute top-4 left-5 font-medium text-gray-600">
           How long will Shiping be
         </h1>
         <div
           className={`${
             openTwo ? " rotate-180" : "rotate-[360deg]"
-          } absolute top-6 right-5 overflow-hidden animate-all duration-300`}
+          } absolute top-4 right-5 overflow-hidden animate-all duration-300`}
         >
           <Image
             src="/Icons/openMore.svg"

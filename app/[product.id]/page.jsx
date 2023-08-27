@@ -4,13 +4,10 @@ import Crousel from "@/components/Crousel";
 import Review from "@/components/Review";
 import { db } from "@/config/FireBase";
 import { doc, getDoc } from "firebase/firestore";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Loading from "../loading";
 
 function Product() {
-  const router = useRouter();
   const [ProductData, setProductData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const cleanId = usePathname().split("/").join("");
@@ -39,22 +36,12 @@ function Product() {
   }, []);
 
   return (
-    <main className="h-screen hide-scrollbar relative bg-[#f4f4f4] p-2 pt-[5.1rem] overflow-y-scroll overflow-x-hidden flex flex-col items-center">
-      <button
-        onClick={() => router.back()}
-        className=" p-2 absolute z-50 top-5 left-3 bg-blue-700 rounded-lg"
-      >
-        <Image
-          src={"/Icons/LeftArrowWhite.svg"}
-          width={34}
-          height={34}
-          alt="Go Back to previous page"
-        />
-      </button>
+    <main className="h-screen hide-scrollbar relative bg-[#f4f4f4] pb-2 px-2 md:px-[150px] pt-[5.1rem] overflow-y-scroll overflow-x-hidden flex flex-col items-center">
+      
 
       <Crousel ProductData={ProductData} />
 
-      <div class="w-full max-w-sm mt-[3rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div class="w-full mt-[3rem] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         {isLoading ? (
           <div role="status" class="max-w-sm animate-pulse p-5 h-[186px] ">
             <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
@@ -112,7 +99,7 @@ function Product() {
 
       <Accordion ProductData={ProductData} />
 
-      <section className="w-full">
+      <section className="w-full flex flex-col gap-2">
         <Review ProductData={ProductData} />
       </section>
     </main>

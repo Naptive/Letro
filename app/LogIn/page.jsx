@@ -5,8 +5,9 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "@/config/FireBase";
+import { auth, db } from "@/config/FireBase";
 import { useRouter } from "next/navigation";
+import { doc, setDoc, getDoc, } from "firebase/firestore";
 
 function Login() {
   const router = useRouter();
@@ -14,14 +15,39 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const addUserData = async () => {
+    try {
+      const userRef = doc(db, auth.currentUser.displayName, 'info');
+      const userSnapshot = await getDoc(userRef);
+
+      if (userSnapshot.exists()) {
+        console.log("User data already exists");
+        return; // Exit the function if the user data already exists
+      } else {
+       
+        try {
+          await setDoc(doc(db, auth.currentUser.displayName, 'info'), {
+            email: auth.currentUser.email,
+          }).then(() => {
+            alert(`added ${auth.currentUser.email}`);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      console.log("Document added successfully");
+    } catch (error) {
+      console.error("Error adding document:", error);
+    }
+  };
+
   const googleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
       setLoading(true);
-      await signInWithPopup(auth, provider).then(() => {
-        router.push("/");
-        localStorage.setItem(auth.currentUser.email, auth.currentUser.photoURL)
-      });
+      await signInWithPopup(auth, provider);
+      await addUserData();
+      router.push("/");
     } catch (error) {
       console.log(error);
     } finally {
@@ -151,7 +177,9 @@ function Login() {
           </div>
 
           <button
-            onClick={googleSignIn}
+            onClick={() => {
+              googleSignIn();
+            }}
             type="button"
             class="text-white w-[80%] bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none mt-10 focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
           >
